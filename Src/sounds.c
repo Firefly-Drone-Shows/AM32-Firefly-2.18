@@ -94,7 +94,7 @@ void playBlueJayTune()
     RELOAD_WATCHDOG_COUNTER();
 }
 
-void playStartupTune()
+void playStartupTune() // 3 tones ascending (not the confirmation tone)
 {
     __disable_irq();
 
@@ -124,7 +124,7 @@ void playStartupTune()
     __enable_irq();
 }
 
-void playBrushedStartupTune()
+void playBrushedStartupTune() // 4 tones ascending
 {
     __disable_irq();
     SET_AUTO_RELOAD_PWM(TIM1_AUTORELOAD);
@@ -148,7 +148,7 @@ void playBrushedStartupTune()
     __enable_irq();
 }
 
-void playDuskingTune()
+void playDuskingTune()  // lots of tones
 {
     setCaptureCompare();
     SET_AUTO_RELOAD_PWM(TIM1_AUTORELOAD);
@@ -174,7 +174,7 @@ void playDuskingTune()
     SET_AUTO_RELOAD_PWM(TIMER1_MAX_ARR);
 }
 
-void playInputTune2()
+void playInputTune2()  // 3 tones descending
 {
     SET_AUTO_RELOAD_PWM(TIM1_AUTORELOAD);
     __disable_irq();
@@ -195,7 +195,7 @@ void playInputTune2()
     __enable_irq();
 }
 
-void playInputTune()
+void playInputTune()// this is the tone that plays to confirm FC connection (currently disabled)
 {
     __disable_irq();
     SET_AUTO_RELOAD_PWM(TIM1_AUTORELOAD);
@@ -215,7 +215,7 @@ void playInputTune()
     __enable_irq();
 }
 
-void playDefaultTone()
+void playDefaultTone()  // two tones ascending
 {
     SET_AUTO_RELOAD_PWM(TIM1_AUTORELOAD);
     SET_PRESCALER_PWM(50);
@@ -231,7 +231,7 @@ void playDefaultTone()
     SET_AUTO_RELOAD_PWM(TIMER1_MAX_ARR);
 }
 
-void playChangedTone()
+void playChangedTone()  // 2 tones descending
 {
     SET_AUTO_RELOAD_PWM(TIM1_AUTORELOAD);
     SET_PRESCALER_PWM(40);
@@ -247,7 +247,7 @@ void playChangedTone()
     SET_AUTO_RELOAD_PWM(TIMER1_MAX_ARR);
 }
 
-void playBeaconTune3()
+void playBeaconTune3()  // not sure
 {
     SET_AUTO_RELOAD_PWM(TIM1_AUTORELOAD);
     __disable_irq();

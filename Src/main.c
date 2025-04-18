@@ -318,9 +318,9 @@ uint8_t crsf_output_PWM_channel = 2;
 char eeprom_layout_version = EEPROM_VERSION;
 uint8_t telemetry_interval_ms = 30;
 char temp_advance = 1;
-uint16_t motor_kv = 2000;
+uint16_t motor_kv = 980;
 uint8_t dead_time_override = DEAD_TIME;
-uint16_t stall_protect_target_interval = TARGET_STALL_PROTECTION_INTERVAL;
+uint16_t stall_protect_target_interval = T`ARGET_STALL_PROTECTION_INTERVAL;
 uint16_t enter_sine_angle = 180;
 char do_once_sinemode = 0;
 uint8_t auto_advance_level;
@@ -333,7 +333,7 @@ uint8_t servo_dead_band = 100;
 
 //========================= Battery Cuttoff Settings ========================
 char LOW_VOLTAGE_CUTOFF = 0; // Turn Low Voltage CUTOFF on or off
-uint16_t low_cell_volt_cutoff = 330; // 3.3volts per cell
+uint16_t low_cell_volt_cutoff = 200; // 3volts per cell
 
 //=========================== END EEPROM Defaults ===========================
 
@@ -1246,7 +1246,8 @@ void tenKhzRoutine()
                             if ((cell_count == 0) && LOW_VOLTAGE_CUTOFF) {
                                 cell_count = battery_voltage / 370;
                                 for (int i = 0; i < cell_count; i++) {
-                                    playInputTune();
+                                    // playInputTune();
+                                    playStartupTune();
                                     delayMillis(100);
                                     RELOAD_WATCHDOG_COUNTER();
                                 }
@@ -1254,7 +1255,8 @@ void tenKhzRoutine()
 #ifdef MCU_AT415
 															play_tone_flag = 4;
 #else
-															playInputTune();
+															// playInputTune();
+                                                            playStartupTune()
 #endif
                             }
                             if (!servoPwm) {
@@ -1828,7 +1830,7 @@ if(zero_crosses < 5){
                 }
                 NVIC_SystemReset();
             }
-            if (signaltimeout > LOOP_FREQUENCY_HZ << 1) { // 2 second when not armed
+            if (signaltimeout > LOOP_FREQUENCY_HZ << 4) { // 16 second timeout when not connected and when not armed (2^4)                
                 allOff();
                 armed = 0;
                 input = 0;
