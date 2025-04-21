@@ -320,7 +320,7 @@ uint8_t telemetry_interval_ms = 30;
 char temp_advance = 1;
 uint16_t motor_kv = 980;
 uint8_t dead_time_override = DEAD_TIME;
-uint16_t stall_protect_target_interval = T`ARGET_STALL_PROTECTION_INTERVAL;
+uint16_t stall_protect_target_interval = TARGET_STALL_PROTECTION_INTERVAL;
 uint16_t enter_sine_angle = 180;
 char do_once_sinemode = 0;
 uint8_t auto_advance_level;
@@ -1256,7 +1256,7 @@ void tenKhzRoutine()
 															play_tone_flag = 4;
 #else
 															// playInputTune();
-                                                            playStartupTune()
+                                                            playStartupTune();
 #endif
                             }
                             if (!servoPwm) {
