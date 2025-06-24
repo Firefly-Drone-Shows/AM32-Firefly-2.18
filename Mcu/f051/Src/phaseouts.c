@@ -285,11 +285,19 @@ void phaseALOW()
 
 #endif
 
+//void allOff()
+//{
+//    phaseAFLOAT();
+//    phaseBFLOAT();
+//    phaseCFLOAT();
+//}
+
 void allOff()
 {
-    phaseAFLOAT();
-    phaseBFLOAT();
-    phaseCFLOAT();
+    fullBrake();
+    //phaseAFLOAT();
+    //phaseBFLOAT();
+    //phaseCFLOAT();
 }
 
 void comStep(char newStep)
