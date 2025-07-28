@@ -932,7 +932,7 @@
 #ifdef FIREFLY_G20_F051
 #define FILE_NAME "FIREFLY_G20_F051"
 #define FIRMWARE_NAME "Firefly G20 "
-#define DEAD_TIME 4
+#define DEAD_TIME 24
 #define HARDWARE_GROUP_FIREFLY
 #define USE_SERIAL_TELEMETRY
 #endif
