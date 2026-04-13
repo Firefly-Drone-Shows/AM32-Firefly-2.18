@@ -323,7 +323,11 @@ uint8_t crsf_input_channel = 1;
 uint8_t crsf_output_PWM_channel = 2;
 uint8_t telemetry_interval_ms = 30;
 uint8_t temp_advance;
+#ifdef FIREFLY_G20_F051
+uint16_t motor_kv = 980;
+#else
 uint16_t motor_kv = 2000;
+#endif
 uint8_t dead_time_override = DEAD_TIME;
 uint16_t stall_protect_target_interval = TARGET_STALL_PROTECTION_INTERVAL;
 uint16_t enter_sine_angle = 180;
@@ -338,7 +342,11 @@ uint8_t servo_dead_band = 100;
 
 //========================= Battery Cuttoff Settings ========================
 char LOW_VOLTAGE_CUTOFF = 0; // Turn Low Voltage CUTOFF on or off
+#ifdef FIREFLY_G20_F051
+uint16_t low_cell_volt_cutoff = 200; // 2.0volts per cell
+#else
 uint16_t low_cell_volt_cutoff = 330; // 3.3volts per cell
+#endif
 
 //=========================== END EEPROM Defaults ===========================
 
@@ -1330,7 +1338,7 @@ void tenKhzRoutine()
                             if ((cell_count == 0) && eepromBuffer.low_voltage_cut_off == 1) {
                                 cell_count = battery_voltage / 370;
                                 for (int i = 0; i < cell_count; i++) {
-                                    playInputTune();
+                                    playStartupTune();
                                     delayMillis(100);
                                     RELOAD_WATCHDOG_COUNTER();
                                 }
@@ -1338,7 +1346,7 @@ void tenKhzRoutine()
 #ifdef MCU_AT415
 															play_tone_flag = 4;
 #else
-															playInputTune();
+															playStartupTune();
 #endif
                             }
                             if (!servoPwm && !dshot) {
@@ -1899,6 +1907,7 @@ if(zero_crosses < 5){
                 }
                 NVIC_SystemReset();
             }
+#if 0 // Firefly: disable unarmed signal timeout reset
             if (signaltimeout > LOOP_FREQUENCY_HZ << 1) { // 2 second when not armed
                 allOff();
                 armed = 0;
@@ -1912,6 +1921,7 @@ if(zero_crosses < 5){
                 }
                 NVIC_SystemReset();
             }
+#endif
         }
 #ifdef USE_CUSTOM_LED
         if ((input >= 47) && (input < 1947)) {
