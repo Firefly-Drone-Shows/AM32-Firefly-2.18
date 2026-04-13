@@ -287,9 +287,7 @@ void phaseALOW()
 
 void allOff()
 {
-    phaseAFLOAT();
-    phaseBFLOAT();
-    phaseCFLOAT();
+    fullBrake();
 }
 
 void comStep(char newStep)
