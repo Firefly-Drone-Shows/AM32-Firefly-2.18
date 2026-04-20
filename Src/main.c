@@ -606,7 +606,7 @@ const unsigned char fireflySettings[192] = {
     // bytes 0-11: header(0x01,ver=3,0x0B), version.major/minor, then new 2.20 fields
     //             max_ramp=50(5%/ms), min_duty=7(3.5%), disable_stick_cal=0,
     //             abs_volt_cutoff=0, current_P=100, current_I=0, current_D=100
-    0x01, 0x03, 0x0B, VERSION_MAJOR, VERSION_MINOR, 0x32, 0x07, 0x00, 0x00, 0x64, 0x00, 0x64,
+    0x01, EEPROM_VERSION, 0x0B, VERSION_MAJOR, VERSION_MINOR, 0x32, 0x07, 0x00, 0x00, 0x64, 0x00, 0x64,
     // bytes 12-23: active_brake_power=0, reserved[4], dir_reversed=0, bi_dir=0,
     //              use_sine_start=0, comp_pwm=1, variable_pwm=0, stuck_rotor=0, advance=30(18.75deg)
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x1E,
@@ -648,7 +648,26 @@ void loadEEpromSettings()
 {
 #ifdef FIREFLY_G20_F051
     // Do not bother with eeprom since we hard-load settings at boot
+    // Okay okay, read settings
+    read_flash_bin(eepromBuffer.buffer, eeprom_address, sizeof(eepromBuffer.buffer));
+    // Compare with VERSION_MAJOR
+    uint8_t save = 0;
+    if (VERSION_MAJOR != eepromBuffer.version.major || VERSION_MINOR != eepromBuffer.version.minor || EEPROM_VERSION > eepromBuffer.eeprom_version) {
+      save = 1;
+      //eepromBuffer.version.major = VERSION_MAJOR;
+      //eepromBuffer.version.minor = VERSION_MINOR;
+      //eepromBuffer.eeprom_version = EEPROM_VERSION;
+      //saveEEpromSettings();
+    }
+    // Now load our settings from array to eepromBuffer struct
     setFireflySettings();
+    // Save if needed
+    if (save == 1) {
+      eepromBuffer.version.major = VERSION_MAJOR;
+      eepromBuffer.version.minor = VERSION_MINOR;
+      eepromBuffer.eeprom_version = EEPROM_VERSION;
+      saveEEpromSettings();
+    }
 #else
     read_flash_bin(eepromBuffer.buffer, eeprom_address, sizeof(eepromBuffer.buffer));
 #endif

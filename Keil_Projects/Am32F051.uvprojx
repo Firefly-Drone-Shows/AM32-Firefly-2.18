@@ -10,13 +10,13 @@
       <TargetName>AM32REF_F051</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>6190000::V6.19::ARMCLANG</pCCUsed>
+      <pCCUsed>6230000::V6.23::ARMCLANG</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -595,6 +595,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>
@@ -609,7 +612,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -1188,6 +1191,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -1271,7 +1277,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -1850,6 +1856,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -1933,7 +1942,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -2512,6 +2521,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -2595,7 +2607,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -3174,6 +3186,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -3257,7 +3272,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -3836,6 +3851,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -3919,7 +3937,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -4498,6 +4516,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -4581,7 +4602,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -5160,6 +5181,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -5243,7 +5267,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -5822,6 +5846,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -5905,7 +5932,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -6484,6 +6511,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -6567,7 +6597,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -7146,6 +7176,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -7229,7 +7262,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -7808,6 +7841,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -7891,7 +7927,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -8470,6 +8506,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -8553,7 +8592,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -9132,6 +9171,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -9215,7 +9257,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -9794,6 +9836,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -9877,7 +9922,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -10456,6 +10501,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -10539,7 +10587,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -11118,6 +11166,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -11201,7 +11252,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -11780,6 +11831,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -11863,7 +11917,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -12442,6 +12496,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -12525,7 +12582,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -13104,6 +13161,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -13187,7 +13247,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -13766,6 +13826,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -13849,7 +13912,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -14428,6 +14491,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -14511,7 +14577,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -15090,6 +15156,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -15173,7 +15242,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -15752,6 +15821,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -15835,7 +15907,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -16414,6 +16486,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -16497,7 +16572,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -17076,6 +17151,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>
@@ -17090,7 +17168,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -17669,6 +17747,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -17752,7 +17833,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -18331,6 +18412,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>
@@ -18345,7 +18429,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -18924,6 +19008,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>
@@ -18938,7 +19025,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -19517,6 +19604,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>
@@ -19531,7 +19621,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -20110,6 +20200,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -20193,7 +20286,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -20772,6 +20865,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -20855,7 +20951,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -21434,6 +21530,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -21517,7 +21616,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -22096,6 +22195,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -22179,7 +22281,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -22758,6 +22860,9 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -22841,7 +22946,7 @@
         <TargetCommonOption>
           <Device>STM32F051K6Ux</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.1.1</PackID>
+          <PackID>Keil.STM32F0xx_DFP.3.0.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00002000) IROM(0x08000000,0x00008000) CPUTYPE("Cortex-M0") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -23420,11 +23525,13 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>
     </Target>
-
     <Target>
       <TargetName>FIREFLY_G20_F051</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
@@ -24014,7 +24121,79 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>New Group</GroupName>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
+          <GroupOption>
+            <CommonProperty>
+              <UseCPPCompiler>0</UseCPPCompiler>
+              <RVCTCodeConst>0</RVCTCodeConst>
+              <RVCTZI>0</RVCTZI>
+              <RVCTOtherData>0</RVCTOtherData>
+              <ModuleSelection>0</ModuleSelection>
+              <IncludeInBuild>0</IncludeInBuild>
+              <AlwaysBuild>2</AlwaysBuild>
+              <GenerateAssemblyFile>2</GenerateAssemblyFile>
+              <AssembleAssemblyFile>2</AssembleAssemblyFile>
+              <PublicsOnly>2</PublicsOnly>
+              <StopOnExitCode>11</StopOnExitCode>
+              <CustomArgument></CustomArgument>
+              <IncludeLibraryModules></IncludeLibraryModules>
+              <ComprImg>1</ComprImg>
+            </CommonProperty>
+            <GroupArmAds>
+              <Cads>
+                <interw>2</interw>
+                <Optim>0</Optim>
+                <oTime>2</oTime>
+                <SplitLS>2</SplitLS>
+                <OneElfS>2</OneElfS>
+                <Strict>2</Strict>
+                <EnumInt>2</EnumInt>
+                <PlainCh>2</PlainCh>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <wLevel>0</wLevel>
+                <uThumb>2</uThumb>
+                <uSurpInc>2</uSurpInc>
+                <uC99>2</uC99>
+                <uGnu>2</uGnu>
+                <useXO>2</useXO>
+                <v6Lang>0</v6Lang>
+                <v6LangP>0</v6LangP>
+                <vShortEn>2</vShortEn>
+                <vShortWch>2</vShortWch>
+                <v6Lto>2</v6Lto>
+                <v6WtE>2</v6WtE>
+                <v6Rtti>2</v6Rtti>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Cads>
+              <Aads>
+                <interw>2</interw>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <thumb>2</thumb>
+                <SplitLS>2</SplitLS>
+                <SwStkChk>2</SwStkChk>
+                <NoWarn>2</NoWarn>
+                <uSurpInc>2</uSurpInc>
+                <useXO>2</useXO>
+                <ClangAsOpt>0</ClangAsOpt>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Aads>
+            </GroupArmAds>
+          </GroupOption>
         </Group>
       </Groups>
     </Target>
