@@ -607,14 +607,27 @@ const unsigned char fireflySettings[192] = {
 
 void setFireflySettings(void)
 {
+#if DRONECAN_SUPPORT
+    // Overwrite with firefly settings, but keep the per-board CAN identity
+    // (node id, esc index, telemetry rates) read from EEPROM in bytes
+    // 176..191. Input must come from DroneCAN, not the PWM pad (whose pin
+    // is reused as SPI1 MISO for the TCAN4550).
+    memcpy(&eepromBuffer, fireflySettings, 176);
+    eepromBuffer.input_type = DRONECAN_IN;
+#else
     // Overwrite with firefly settings
     memcpy(&eepromBuffer, fireflySettings, sizeof(eepromBuffer));
+#endif
 }
 
 void loadEEpromSettings()
 {
-#ifdef FIREFLY_G20_F051
-	// Do not bother with eeprom since we hard-load settings at boot
+#ifdef HARDWARE_GROUP_FIREFLY
+#if DRONECAN_SUPPORT
+	// Read stored eeprom first so the per-board CAN identity survives
+	// the hard-load below
+	read_flash_bin(eepromBuffer.buffer, eeprom_address, sizeof(eepromBuffer.buffer));
+#endif
 	setFireflySettings();
 #else
     read_flash_bin(eepromBuffer.buffer, eeprom_address, sizeof(eepromBuffer.buffer));
@@ -773,7 +786,7 @@ void loadEEpromSettings()
 
 void saveEEpromSettings()
 {
-#ifdef FIREFLY_G20_F051
+#ifdef HARDWARE_GROUP_FIREFLY
 		// Do not bother with eeprom since we hard-load settings at boot
 	  // Then again, write them at least once so am32.ca will show correct data
 	  eepromBuffer.eeprom_version = eeprom_layout_version;
@@ -1466,6 +1479,7 @@ void tenKhzRoutine()
 
 void processDshot()
 {
+#ifndef CAN_ONLY_INPUT
     if (compute_dshot_flag == 1) {
         computeDshotDMA();
         compute_dshot_flag = 0;
@@ -1475,6 +1489,7 @@ void processDshot()
         compute_dshot_flag = 0;
         return;
     }
+#endif
     setInput();
 }
 

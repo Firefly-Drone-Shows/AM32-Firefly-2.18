@@ -38,3 +38,24 @@ CFLAGS_$(MCU) += \
 	-DPREFETCH_ENABLE=1
 
 SRC_$(MCU) := $(foreach dir,$(SRC_DIR_$(MCU)),$(wildcard $(dir)/*.[cs]))
+
+# optional CAN support (TCAN4550 over SPI - the F051 has no CAN peripheral).
+# -Os overrides the global -O3: the DroneCAN stack does not fit at -O3 in
+# the 27K app region. Trailing flags win in gcc, and this is only applied
+# to _CAN targets.
+CFLAGS_CAN_$(MCU) = \
+	-ISrc/DroneCAN \
+	-ISrc/DroneCAN/libcanard \
+	-ISrc/DroneCAN/dsdl_generated/include \
+	-Os \
+	-fno-unwind-tables -fno-asynchronous-unwind-tables
+
+SRC_DIR_CAN_$(MCU) = Src/DroneCAN \
+		Src/DroneCAN/dsdl_generated/src \
+		Src/DroneCAN/libcanard
+
+SRC_CAN_$(MCU) := $(foreach dir,$(SRC_DIR_CAN_$(MCU)),$(wildcard $(dir)/*.[cs]))
+
+# CAN variant lives in ldscripts/ so the LDSCRIPT_F051 wildcard above
+# does not pick it up for non-CAN builds
+LDSCRIPT_CAN_$(MCU) := $(HAL_FOLDER_$(MCU))/ldscripts/ldscript_CAN.ld

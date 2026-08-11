@@ -20,6 +20,11 @@ uint8_t buffer_padding = 0;
 
 void receiveDshotDma()
 {
+#ifdef CAN_ONLY_INPUT
+    // input comes over DroneCAN; the capture timer's pin is reused as
+    // SPI1 MISO for the TCAN4550, so never arm the capture DMA
+    return;
+#else
     out_put = 0;
 #ifdef USE_TIMER_3_CHANNEL_1
     RCC->APB1RSTR |= LL_APB1_GRP1_PERIPH_TIM3;
@@ -51,10 +56,14 @@ void receiveDshotDma()
     IC_TIMER_REGISTER->DIER |= TIM_DIER_CC1DE;
     IC_TIMER_REGISTER->CCER |= IC_TIMER_CHANNEL;
     IC_TIMER_REGISTER->CR1 |= TIM_CR1_CEN;
+#endif // CAN_ONLY_INPUT
 }
 
 void sendDshotDma()
 {
+#ifdef CAN_ONLY_INPUT
+    return;
+#else
     out_put = 1;
 #ifdef USE_TIMER_3_CHANNEL_1
     //          // de-init timer 2
@@ -91,6 +100,7 @@ void sendDshotDma()
     IC_TIMER_REGISTER->CCER |= IC_TIMER_CHANNEL;
     IC_TIMER_REGISTER->BDTR |= TIM_BDTR_MOE;
     IC_TIMER_REGISTER->CR1 |= TIM_CR1_CEN;
+#endif // CAN_ONLY_INPUT
 }
 
 uint8_t getInputPinState() { return (INPUT_PIN_PORT->IDR & INPUT_PIN); }

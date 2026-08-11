@@ -117,6 +117,19 @@ void computeServoInput()
 
 void transfercomplete()
 {
+#ifdef CAN_ONLY_INPUT
+    // throttle comes over DroneCAN; there is no PWM/DShot capture to
+    // process. But keep the zero-throttle counter: arming in main.c
+    // requires zero_input_count > 30 after a second of zero input.
+    if (!armed) {
+        if (adjusted_input == 0) {
+            zero_input_count++;
+        } else {
+            zero_input_count = 0;
+        }
+    }
+    return;
+#else
     if (armed && dshot_telemetry) {
         if (out_put) {
             receiveDshotDma();
@@ -192,6 +205,7 @@ void transfercomplete()
             }
         }
     }
+#endif // CAN_ONLY_INPUT
 }
 
 void checkDshot()

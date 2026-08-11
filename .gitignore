@@ -18,3 +18,4 @@ Keil_Projects/Listings
 .DS_Store
 .vscode/settings.json
 /Keil_Projects/*.lst
+linux-tools.tar.gz
