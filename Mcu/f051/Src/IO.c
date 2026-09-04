@@ -21,8 +21,8 @@ uint8_t buffer_padding = 0;
 void receiveDshotDma()
 {
 #ifdef CAN_ONLY_INPUT
-    // input comes over DroneCAN; the capture timer's pin is reused as
-    // SPI1 MISO for the TCAN4550, so never arm the capture DMA
+    // input comes over DroneCAN; the PWM/DShot capture is compiled out
+    // on this build (flash), so never arm the capture DMA
     return;
 #else
     out_put = 0;

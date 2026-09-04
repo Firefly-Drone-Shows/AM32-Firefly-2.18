@@ -608,12 +608,10 @@ const unsigned char fireflySettings[192] = {
 void setFireflySettings(void)
 {
 #if DRONECAN_SUPPORT
-    // Overwrite with firefly settings, but keep the per-board CAN identity
-    // (node id, esc index, telemetry rates) read from EEPROM in bytes
-    // 176..191. Input must come from DroneCAN, not the PWM pad (whose pin
-    // is reused as SPI1 MISO for the TCAN4550).
+    // Seed the tuning bytes (0..175) from the Firefly table but keep the
+    // per-board CAN identity (node id, esc index, require_arming, rates)
+    // already read from EEPROM in bytes 176..191.
     memcpy(&eepromBuffer, fireflySettings, 176);
-    eepromBuffer.input_type = DRONECAN_IN;
 #else
     // Overwrite with firefly settings
     memcpy(&eepromBuffer, fireflySettings, sizeof(eepromBuffer));
@@ -624,11 +622,26 @@ void loadEEpromSettings()
 {
 #ifdef HARDWARE_GROUP_FIREFLY
 #if DRONECAN_SUPPORT
-	// Read stored eeprom first so the per-board CAN identity survives
-	// the hard-load below
-	read_flash_bin(eepromBuffer.buffer, eeprom_address, sizeof(eepromBuffer.buffer));
+    // CAN build: settings are tunable from am32.ca and live in EEPROM.
+    // A freshly provisioned page (tools/gen_firefly_can_config.py) or one
+    // the configurator wrote back while still blank carries no layout
+    // version (0xFF erased, 0x00 zeroed): seed it once from the Firefly
+    // table and persist it so the configurator shows the real values.
+    read_flash_bin(eepromBuffer.buffer, eeprom_address, sizeof(eepromBuffer.buffer));
+    const uint8_t eeprom_blank = (eepromBuffer.eeprom_version == 0xFF || eepromBuffer.eeprom_version == 0x00);
+    if (eeprom_blank) {
+        setFireflySettings();
+    }
+    // the PWM/DShot capture is compiled out (CAN_ONLY_INPUT), so the input
+    // type is not a user choice on this build whatever the page says
+    eepromBuffer.input_type = DRONECAN_IN;
+    if (eeprom_blank) {
+        saveEEpromSettings();
+    }
+#else
+    // PWM build: hard-load the Firefly table at boot, EEPROM is ignored
+    setFireflySettings();
 #endif
-	setFireflySettings();
 #else
     read_flash_bin(eepromBuffer.buffer, eeprom_address, sizeof(eepromBuffer.buffer));
 #endif
@@ -786,17 +799,12 @@ void loadEEpromSettings()
 
 void saveEEpromSettings()
 {
-#ifdef HARDWARE_GROUP_FIREFLY
-		// Do not bother with eeprom since we hard-load settings at boot
-	  // Then again, write them at least once so am32.ca will show correct data
-	  eepromBuffer.eeprom_version = eeprom_layout_version;
-
-    save_flash_nolib(eepromBuffer.buffer, sizeof(eepromBuffer.buffer), eeprom_address);
-#else
+    // On the Firefly PWM build the table is hard-loaded at boot, so this
+    // only keeps am32.ca's readout honest; on the CAN build it is the
+    // real settings store.
     eepromBuffer.eeprom_version = eeprom_layout_version;
 
     save_flash_nolib(eepromBuffer.buffer, sizeof(eepromBuffer.buffer), eeprom_address);
-#endif
 }
 
 uint16_t getSmoothedCurrent()

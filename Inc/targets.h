@@ -946,7 +946,10 @@
 // UART code does not fit alongside the DroneCAN stack in 32k
 #define DRONECAN_SUPPORT 1
 // input comes only from DroneCAN RawCommand: compile out the PWM/DShot
-// capture machinery (the pad is unused and its pin is reused for SPI)
+// capture machinery to save flash. The pad (PB4, MTR_IN) is still wired
+// and free: SPI1 uses PB3/PA6/PB5, so a dual PWM+CAN build is possible.
+// Tuning is done from am32.ca via the bootloader on that pad and stored
+// in EEPROM; only the input type is forced to DroneCAN at boot.
 #define CAN_ONLY_INPUT
 // no CAN peripheral on the F051: DroneCAN runs over a TCAN4550 on SPI1,
 // polled from the main loop so nothing can preempt commutation
