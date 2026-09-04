@@ -937,6 +937,71 @@
 #define USE_SERIAL_TELEMETRY
 #endif
 
+#ifdef FIREFLY_G20_F051_CAN
+#define FILE_NAME "FIREFLY_G20_F051_CAN"
+#define FIRMWARE_NAME "Firefly G20C"
+#define DEAD_TIME 24
+#define HARDWARE_GROUP_FIREFLY
+// no USE_SERIAL_TELEMETRY: telemetry goes over CAN (esc.Status) and the
+// UART code does not fit alongside the DroneCAN stack in 32k
+#define DRONECAN_SUPPORT 1
+// input comes only from DroneCAN RawCommand: compile out the PWM/DShot
+// capture machinery to save flash. The pad (PB4, MTR_IN) is still wired
+// and free: SPI1 uses PB3/PA6/PB5, so a dual PWM+CAN build is possible.
+// Tuning is done from am32.ca via the bootloader on that pad and stored
+// in EEPROM; only the input type is forced to DroneCAN at boot.
+#define CAN_ONLY_INPUT
+// no CAN peripheral on the F051: DroneCAN runs over a TCAN4550 on SPI1,
+// polled from the main loop so nothing can preempt commutation
+#define CAN_TCAN4550
+#define CAN_POLLED_RX
+// no CAN bootloader on this MCU, so no firmware-update-over-CAN support
+#define DRONECAN_NO_FWUPDATE
+// keep the 32k flash layout (EEPROM at 0x08007C00), not the 128k CAN one
+#define DRONECAN_KEEP_EEPROM_LAYOUT
+// strip DroneCAN to the PX4-facing essentials (RawCommand, esc.Status,
+// NodeStatus, GetNodeInfo, ArmingStatus, RestartNode) to fit 32k flash:
+// no params-over-CAN, no DNA, no LogMessage, no FlexDebug, no input filter
+#define DRONECAN_MINIMAL
+// enough for GetNodeInfo/param responses plus RX transfers (32-byte blocks)
+#define CANARD_POOL_SIZE 1024
+/*
+  TCAN4550 SPI1 wiring, per the FF_ESC_GEN2_4In1_A3 schematic:
+    SCK  = PB3  (pin 26, AF0)
+    MISO = PA6  (pin 12, AF0)
+    MOSI = PB5  (pin 28, AF0)
+    nCS  = PA15 (pin 25, plain GPIO)
+    nINT = PB8  (pin 32, open-drain, 10k pullup to 3.3V) -- unused for
+           now (RX is polled); available for an EXTI upgrade later
+  Each MCU has its own TCAN4550: 40 MHz crystal (matches TCAN_NBTP_1MBIT),
+  VSUP on the regulated 12V rail, 120R split termination DNP by default.
+
+  Telemetry senses on this board:
+  - PA6 is the default F051 current ADC pin but is SPI MISO here, and
+    the default voltage pin PA3 carries PWR_CURRENT_SENSE (an INA240A2
+    battery-current amp wired only to ESC #4; floating on ESCs 1-3).
+    So both analog readings are meaningless -> NO_CURRENT_SENSE and
+    NO_VOLTAGE_SENSE zero the esc.Status fields. Current limiting and
+    low-voltage cutoff are already disabled by the hard settings
+    (limits.current=102 engages only for 1..99; low_voltage_cut_off=0).
+  - Future: ESC #4 could report battery current on PA3/ch3 via the
+    INA240A2 (50 V/V) x 0.5 mOhm shunt = 25 mV/A (MILLIVOLT_PER_AMP 25).
+ */
+#define TCAN_SCK_PORT GPIOB
+#define TCAN_SCK_PINNUM 3
+#define TCAN_MISO_PORT GPIOA
+#define TCAN_MISO_PINNUM 6
+#define TCAN_MOSI_PORT GPIOB
+#define TCAN_MOSI_PINNUM 5
+#define TCAN_CS_PORT GPIOA
+#define TCAN_CS_PINNUM 15
+#define TCAN_CS_PIN (1u << TCAN_CS_PINNUM)
+#define TCAN_NINT_PORT GPIOB
+#define TCAN_NINT_PINNUM 8
+#define NO_CURRENT_SENSE
+#define NO_VOLTAGE_SENSE
+#endif
+
 #ifdef TBS_12S_F415_CAN
 #define FIRMWARE_NAME "TBS 12S CAN"
 #define FILE_NAME "TBS_12S_F415_CAN"
@@ -4454,8 +4519,9 @@
 // default to no DroneCAN support
 #ifndef DRONECAN_SUPPORT
 #define DRONECAN_SUPPORT 0
-#elif DRONECAN_SUPPORT == 1
-// all DroneCAN ESCs use 128k flash layout
+#elif DRONECAN_SUPPORT == 1 && !defined(DRONECAN_KEEP_EEPROM_LAYOUT)
+// all DroneCAN ESCs use 128k flash layout, except small-flash targets
+// that define DRONECAN_KEEP_EEPROM_LAYOUT (e.g. 32k F051)
 #undef EEPROM_START_ADD
 #define EEPROM_START_ADD (uint32_t)0x0801F800
 #endif

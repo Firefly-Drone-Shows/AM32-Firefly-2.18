@@ -39,7 +39,10 @@
 #define TARGET_PERIOD_US 1000U
 
 static CanardInstance canard;
-static uint8_t canard_memory_pool[CANARD_POOL_SIZE];
+// the pool is used as a linked list of word-sized blocks; without forced
+// alignment this uint8_t array can land on an odd address and the pointer
+// writes in initPoolAllocator() hard-fault the Cortex-M0
+static uint8_t canard_memory_pool[CANARD_POOL_SIZE] __attribute__((aligned(8)));
 
 struct CANStats canstats;
 
@@ -81,6 +84,7 @@ enum VarType {
 /*
   structure sent with FlexDebug
  */
+#ifndef DRONECAN_MINIMAL
 static struct PACKED {
     uint8_t version;
     uint32_t commutation_interval;
@@ -91,6 +95,7 @@ static struct PACKED {
     int32_t  rx_ecode;
     uint8_t auto_advance_level;
 } debug1;
+#endif // DRONECAN_MINIMAL
 
 static void can_printf(const char *fmt, ...);
 
@@ -118,6 +123,7 @@ extern void saveEEpromSettings(void);
 extern void loadEEpromSettings(void);
 static void set_input(uint16_t input);
 
+#ifndef DRONECAN_MINIMAL
 /*
   the set of parameters to present to the user over DroneCAN
 */
@@ -218,11 +224,45 @@ static void save_settings(void)
     can_printf("saved settings");
 }
 
+#else // DRONECAN_MINIMAL
+
+/*
+  minimal build: no DroneCAN parameter interface, so just sanity-check
+  the CAN config block read from EEPROM (virgin flash reads 0xFF).
+  Defaults match the full parameter table above.
+ */
+static void load_settings(void)
+{
+    if (eepromBuffer.can.can_node > 127) {
+        eepromBuffer.can.can_node = 0;
+    }
+    if (eepromBuffer.can.esc_index > 32) {
+        eepromBuffer.can.esc_index = 0;
+    }
+    if (eepromBuffer.can.telem_rate > 200) {
+        eepromBuffer.can.telem_rate = 25;
+    }
+    if (eepromBuffer.can.debug_rate > 200) {
+        eepromBuffer.can.debug_rate = 0;
+    }
+    if (eepromBuffer.can.require_arming > 1) {
+        eepromBuffer.can.require_arming = 1;
+    }
+    if (eepromBuffer.can.require_zero_throttle > 1) {
+        eepromBuffer.can.require_zero_throttle = 1;
+    }
+    if (eepromBuffer.can.filter_hz > 100) {
+        eepromBuffer.can.filter_hz = 0;
+    }
+}
+#endif // DRONECAN_MINIMAL
+
 /*
   hold our node status as a static variable. It will be updated on any errors
 */
 static struct uavcan_protocol_NodeStatus node_status;
 
+#ifndef DRONECAN_MINIMAL
 static bool safe_to_write_settings(void)
 {
     return !running || newinput == 0;
@@ -239,6 +279,7 @@ static uint16_t get_random16(void)
     m_w = 18000 * (m_w & 0xFFFFu) + (m_w >> 16);
     return ((m_z << 16) + m_w) & 0xFFFF;
 }
+#endif // DRONECAN_MINIMAL
 
 /*
   get a 64 bit monotonic timestamp in microseconds since start. This
@@ -262,6 +303,7 @@ static uint64_t micros64(void)
     return base_us + cnt;
 }
 
+#ifndef DRONECAN_MINIMAL
 /*
   get monotonic time in milliseconds since startup
 */
@@ -278,7 +320,15 @@ static const uint8_t default_settings[] = {
     0x20, 0x00, 0x00, 0x00, 0x01, 0x01, 0x01, 0x02, 0x18, 0x64, 0x37, 0x0e, 0x00, 0x00, 0x05, 0x00,
     0x80, 0x80, 0x80, 0x32, 0x00, 0x32, 0x00, 0x00, 0x0f, 0x0a, 0x0a, 0x8d, 0x66, 0x06, 0x00, 0x00
 };
+#endif // DRONECAN_MINIMAL
 
+#ifdef DRONECAN_MINIMAL
+// minimal build: no LogMessage support, avoids dragging in vsnprintf
+static void __attribute__((unused)) can_printf(const char *fmt, ...)
+{
+    (void)fmt;
+}
+#else
 // printf to CAN LogMessage for debugging
 static void can_printf(const char *fmt, ...)
 {
@@ -302,7 +352,9 @@ static void can_printf(const char *fmt, ...)
 		    CANARD_TRANSFER_PRIORITY_LOW,
 		    buffer, len);
 }
+#endif // DRONECAN_MINIMAL
 
+#ifndef DRONECAN_MINIMAL
 /*
   handle parameter GetSet request
 */
@@ -515,6 +567,7 @@ static void handle_param_ExecuteOpcode(CanardInstance* ins, CanardRxTransfer* tr
                            &buffer[0],
                            total_size);
 }
+#endif // DRONECAN_MINIMAL
 
 /*
   handle RestartNode request
@@ -588,7 +641,13 @@ static void set_input(uint16_t input)
     }
 
     const uint16_t unfiltered_input = (dronecan_armed || !eepromBuffer.can.require_arming)? input : 0;
+#ifdef DRONECAN_MINIMAL
+    // no input filter: the biquad coefficient math drags ~4k of libm
+    // trig into flash, which the 32k parts cannot afford
+    const uint16_t filtered_input = unfiltered_input;
+#else
     const uint16_t filtered_input = Filter2P_apply(unfiltered_input, eepromBuffer.can.filter_hz, 1000);
+#endif
 
     newinput = filtered_input;
     last_can_input = unfiltered_input;
@@ -628,6 +687,22 @@ static void handle_RawCommand(CanardInstance *ins, CanardRxTransfer *transfer)
       48-2047: throttle
     */
     uint16_t this_input = 0;
+#ifdef DRONECAN_MINIMAL
+    // integer-only scaling, same truncation behaviour as the float
+    // version below without pulling libgcc soft-float into flash
+    if (input_can == 0) {
+        this_input = 0;
+    } else if (eepromBuffer.bi_direction) {
+        const int32_t scaled_value = ((int32_t)input_can * 1000) / 8192;
+        if (scaled_value >= 0) {
+            this_input = (uint16_t)(1047 + scaled_value);
+        } else {
+            this_input = (uint16_t)(47 - scaled_value);
+        }
+    } else if (input_can > 0) {
+        this_input = (uint16_t)(47 + ((int32_t)input_can * 2000) / 8192);
+    }
+#else
     if (input_can == 0) {
         this_input = 0;
     } else if (eepromBuffer.bi_direction) {
@@ -641,6 +716,7 @@ static void handle_RawCommand(CanardInstance *ins, CanardRxTransfer *transfer)
         const float scaled_value = input_can * (2000.0 / 8192);
         this_input = (uint16_t)(47 + scaled_value);
     }
+#endif
 
     const uint64_t ts = micros64();
     canstats.num_commands++;
@@ -670,6 +746,7 @@ static void handle_ArmingStatus(CanardInstance *ins, CanardRxTransfer *transfer)
   handle a BeginFirmwareUpdate request from a management tool like
   DroneCAN GUI tool or MissionPlanner
  */
+#ifndef DRONECAN_NO_FWUPDATE
 static void handle_begin_firmware_update(CanardInstance* ins, CanardRxTransfer* transfer)
 {
     if (!safe_to_write_settings()) {
@@ -730,7 +807,9 @@ static void handle_begin_firmware_update(CanardInstance* ins, CanardRxTransfer* 
     // path there, but this is simpler
     NVIC_SystemReset();
 }
+#endif // DRONECAN_NO_FWUPDATE
 
+#ifndef DRONECAN_MINIMAL
 /*
   data for dynamic node allocation process
 */
@@ -835,6 +914,7 @@ static void request_DNA()
     // Preparing for timeout; if response is received, this value will be updated from the callback.
     DNA.node_id_allocation_unique_id_offset = 0;
 }
+#endif // DRONECAN_MINIMAL
 
 /*
   This callback is invoked by the library when a new message or request or response is received.
@@ -853,6 +933,7 @@ static void onTransferReceived(CanardInstance *ins, CanardRxTransfer *transfer)
             handle_GetNodeInfo(ins, transfer);
             break;
         }
+#ifndef DRONECAN_MINIMAL
         case UAVCAN_PROTOCOL_PARAM_GETSET_ID: {
             handle_param_GetSet(ins, transfer);
             break;
@@ -861,14 +942,17 @@ static void onTransferReceived(CanardInstance *ins, CanardRxTransfer *transfer)
             handle_param_ExecuteOpcode(ins, transfer);
             break;
         }
+#endif
         case UAVCAN_PROTOCOL_RESTARTNODE_ID: {
             handle_RestartNode(ins, transfer);
             break;
         }
+#ifndef DRONECAN_NO_FWUPDATE
 	case UAVCAN_PROTOCOL_FILE_BEGINFIRMWAREUPDATE_ID: {
 	    handle_begin_firmware_update(ins, transfer);
 	    break;
 	}
+#endif
 	}
     }
     if (transfer->transfer_type == CanardTransferTypeBroadcast) {
@@ -878,10 +962,12 @@ static void onTransferReceived(CanardInstance *ins, CanardRxTransfer *transfer)
             handle_RawCommand(ins, transfer);
             break;
         }
+#ifndef DRONECAN_MINIMAL
         case UAVCAN_PROTOCOL_DYNAMIC_NODE_ID_ALLOCATION_ID: {
             handle_DNA_Allocation(ins, transfer);
             break;
         }
+#endif
 	case UAVCAN_EQUIPMENT_SAFETY_ARMINGSTATUS_ID: {
 	    handle_ArmingStatus(ins, transfer);
             break;
@@ -914,6 +1000,7 @@ static bool shouldAcceptTransfer(const CanardInstance *ins,
             *out_data_type_signature = UAVCAN_PROTOCOL_GETNODEINFO_REQUEST_SIGNATURE;
             return true;
         }
+#ifndef DRONECAN_MINIMAL
         case UAVCAN_PROTOCOL_PARAM_GETSET_ID: {
             *out_data_type_signature = UAVCAN_PROTOCOL_PARAM_GETSET_SIGNATURE;
             return true;
@@ -922,14 +1009,17 @@ static bool shouldAcceptTransfer(const CanardInstance *ins,
             *out_data_type_signature = UAVCAN_PROTOCOL_PARAM_EXECUTEOPCODE_SIGNATURE;
             return true;
         }
+#endif
         case UAVCAN_PROTOCOL_RESTARTNODE_ID: {
             *out_data_type_signature = UAVCAN_PROTOCOL_RESTARTNODE_SIGNATURE;
             return true;
         }
+#ifndef DRONECAN_NO_FWUPDATE
 	case UAVCAN_PROTOCOL_FILE_BEGINFIRMWAREUPDATE_ID: {
 	    *out_data_type_signature = UAVCAN_PROTOCOL_FILE_BEGINFIRMWAREUPDATE_SIGNATURE;
 	    return true;
 	}
+#endif
 	}
     }
     if (transfer_type == CanardTransferTypeBroadcast) {
@@ -939,10 +1029,12 @@ static bool shouldAcceptTransfer(const CanardInstance *ins,
             *out_data_type_signature = UAVCAN_EQUIPMENT_ESC_RAWCOMMAND_SIGNATURE;
             return true;
         }
+#ifndef DRONECAN_MINIMAL
         case UAVCAN_PROTOCOL_DYNAMIC_NODE_ID_ALLOCATION_ID: {
             *out_data_type_signature = UAVCAN_PROTOCOL_DYNAMIC_NODE_ID_ALLOCATION_SIGNATURE;
             return true;
         }
+#endif
 	case UAVCAN_EQUIPMENT_SAFETY_ARMINGSTATUS_ID: {
 	    *out_data_type_signature = UAVCAN_EQUIPMENT_SAFETY_ARMINGSTATUS_SIGNATURE;
             return true;
@@ -1007,6 +1099,122 @@ static void process1HzTasks(uint64_t timestamp_usec)
 #endif
 }
 
+#ifdef DRONECAN_MINIMAL
+/*
+  IEEE754 half-precision value of num/den, integer-only (truncating).
+  Telemetry-grade precision; avoids libgcc soft-float (~2.8k on the M0).
+ */
+static uint16_t f16_from_ratio(int32_t num, uint32_t den)
+{
+    uint16_t sign = 0;
+    uint32_t m;
+    if (num < 0) {
+        sign = 0x8000;
+        m = (uint32_t)(-num);
+    } else {
+        m = (uint32_t)num;
+    }
+    if (m == 0) {
+        return sign;
+    }
+    uint32_t d = den;
+    int16_t e = 0;
+    // normalise so m/d is in [1,2)
+    while (m >= (d << 1)) {
+        if (d & 0x80000000u) {
+            m >>= 1;
+        } else {
+            d <<= 1;
+        }
+        e++;
+    }
+    while (m < d) {
+        if (m & 0x80000000u) {
+            d >>= 1;
+        } else {
+            m <<= 1;
+        }
+        e--;
+    }
+    // keep (m - d) << 10 inside 32 bits
+    while (d >= (1u << 21)) {
+        d >>= 1;
+        m >>= 1;
+    }
+    if (e < -14) {
+        return sign; // flush subnormals to zero
+    }
+    if (e > 15) {
+        return sign | 0x7C00; // out of range -> inf
+    }
+    const uint16_t frac = (uint16_t)(((m - d) << 10) / d);
+    return sign | (uint16_t)((e + 15) << 10) | frac;
+}
+
+/*
+  send ESC status at TELEM_RATE Hz. Hand-encoded (wire-identical to the
+  generated uavcan_equipment_esc_Status_encode) to stay integer-only.
+ */
+static void send_ESCStatus(void)
+{
+    uint8_t buffer[UAVCAN_EQUIPMENT_ESC_STATUS_MAX_SIZE];
+    memset(buffer, 0, sizeof(buffer));
+
+    uint32_t current_cA = 0;
+    if (current.count > 0) {
+        current_cA = current.sum / current.count;
+    }
+    current.sum = 0;
+    current.count = 0;
+#ifdef NO_CURRENT_SENSE
+    // this board has no usable current-sense input - report zero, not noise
+    current_cA = 0;
+#endif
+
+    uint32_t bit_ofs = 0;
+    const uint32_t error_count = 0;
+    canardEncodeScalar(buffer, bit_ofs, 32, &error_count);
+    bit_ofs += 32;
+
+#ifdef NO_VOLTAGE_SENSE
+    // no usable battery-voltage input on this board - report zero, not noise
+    uint16_t f16 = 0;
+#else
+    uint16_t f16 = f16_from_ratio((int32_t)battery_voltage, 100); // centivolts -> V
+#endif
+    canardEncodeScalar(buffer, bit_ofs, 16, &f16);
+    bit_ofs += 16;
+
+    f16 = f16_from_ratio((int32_t)current_cA, 100); // centiamps -> A
+    canardEncodeScalar(buffer, bit_ofs, 16, &f16);
+    bit_ofs += 16;
+
+    f16 = f16_from_ratio((int32_t)degrees_celsius * 100 + 27315, 100); // -> Kelvin
+    canardEncodeScalar(buffer, bit_ofs, 16, &f16);
+    bit_ofs += 16;
+
+    const int32_t rpm = ((int32_t)e_rpm * 200) / eepromBuffer.motor_poles;
+    canardEncodeScalar(buffer, bit_ofs, 18, &rpm);
+    bit_ofs += 18;
+
+    const uint8_t power_rating_pct = 0;
+    canardEncodeScalar(buffer, bit_ofs, 7, &power_rating_pct);
+    bit_ofs += 7;
+
+    canardEncodeScalar(buffer, bit_ofs, 5, &eepromBuffer.can.esc_index);
+    bit_ofs += 5;
+
+    static uint8_t transfer_id;
+
+    canardBroadcast(&canard,
+                    UAVCAN_EQUIPMENT_ESC_STATUS_SIGNATURE,
+                    UAVCAN_EQUIPMENT_ESC_STATUS_ID,
+                    &transfer_id,
+                    CANARD_TRANSFER_PRIORITY_LOW,
+                    buffer,
+                    (bit_ofs + 7) / 8);
+}
+#else
 /*
   send ESC status at TELEM_RATE Hz
 */
@@ -1043,10 +1251,12 @@ static void send_ESCStatus(void)
                     buffer,
                     len);
 }
+#endif // DRONECAN_MINIMAL
 
 /*
   send FlexDebug at DEBUG_RATE Hz
 */
+#ifndef DRONECAN_MINIMAL
 static void send_FlexDebug(void)
 {
     static struct {
@@ -1086,6 +1296,7 @@ static void send_FlexDebug(void)
                     buffer,
                     len);
 }
+#endif // DRONECAN_MINIMAL
 
 
 /*
@@ -1134,6 +1345,23 @@ static void DroneCAN_Startup(void)
     if (eepromBuffer.can.can_node != 0) {
         canardSetLocalNodeID(&canard, eepromBuffer.can.can_node);
     }
+#ifdef DRONECAN_MINIMAL
+    else {
+        /*
+          no DNA in the minimal build: derive a quasi-unique default node
+          ID from the MCU UID so an unconfigured board still shows up on
+          the bus. Set a real ID in eeprom (can.can_node, byte 176) for
+          production - UID-derived IDs can collide.
+         */
+        uint8_t uid[16];
+        sys_can_getUniqueID(uid);
+        uint32_t h = 5381;
+        for (uint8_t i = 0; i < 12; i++) {
+            h = h * 33 + uid[i];
+        }
+        canardSetLocalNodeID(&canard, 1 + (h % 125)); // 1..125
+    }
+#endif
 
     // initialise low level CAN peripheral hardware
     sys_can_init();
@@ -1146,6 +1374,9 @@ static void DroneCAN_Startup(void)
         NVIC_DisableIRQ(DMA1_Channel5_IRQn);
         NVIC_DisableIRQ(EXTI15_10_IRQn);
         EXTI->IMR1 &= ~(1U << 15);
+#elif defined(MCU_F051)
+        // input capture DMA for the (unused) PWM/DShot input pad
+        NVIC_DisableIRQ(IC_DMA_IRQ_NAME);
 #elif defined(MCU_AT415)
         NVIC_DisableIRQ(DMA1_Channel6_IRQn);
         NVIC_DisableIRQ(EXINT15_10_IRQn);
@@ -1163,7 +1394,9 @@ void DroneCAN_update()
 
     static uint64_t next_1hz_service_at;
     static uint64_t next_telem_service_at;
+#ifndef DRONECAN_MINIMAL
     static uint64_t next_flexdebug_at;
+#endif
     if (!done_startup) {
         DroneCAN_Startup();
         done_startup = true;
@@ -1175,8 +1408,25 @@ void DroneCAN_update()
         set_rtc_backup_register(0, RTC_BKUP0_SIGNAL);
     }
 
+#ifdef CAN_POLLED_RX
+    /*
+      polled transport (e.g. TCAN4550 on SPI): there is no RX interrupt,
+      so drain the RX FIFO here at a bounded rate. Must run before the
+      DNA early-return below or allocation replies are never seen.
+     */
+    {
+        static uint64_t next_rx_poll_us;
+        const uint64_t now_us = micros64();
+        if (now_us >= next_rx_poll_us) {
+            next_rx_poll_us = now_us + 250; // 4 kHz
+            DroneCAN_receiveFrame();
+        }
+    }
+#endif
+
     DroneCAN_processTxQueue();
 
+#ifndef DRONECAN_MINIMAL
     // see if we are still doing DNA
     if (canardGetLocalNodeID(&canard) == CANARD_BROADCAST_NODE_ID) {
 	// we're still waiting for a DNA allocation of our node ID
@@ -1186,6 +1436,7 @@ void DroneCAN_update()
         sys_can_enable_IRQ();
 	return;
     }
+#endif
 
     const uint64_t ts = micros64();
 
@@ -1197,10 +1448,12 @@ void DroneCAN_update()
         next_telem_service_at += 1000000ULL/eepromBuffer.can.telem_rate;
 	send_ESCStatus();
     }
+#ifndef DRONECAN_MINIMAL
     if (eepromBuffer.can.debug_rate > 0 && ts >= next_flexdebug_at) {
         next_flexdebug_at += 1000000ULL/eepromBuffer.can.debug_rate;
         send_FlexDebug();
     }
+#endif
 
     DroneCAN_processTxQueue();
 
